@@ -19,7 +19,7 @@ HOST = os.getenv("HOST")
 PORT = os.getenv("PORT")
 DB_NAME = "banking"
 INIT_CONNECT_STR = f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{HOST}:{PORT}"
-DB_CONNECT_STR = INIT_CONNECT_STR+"/{DB_NAME}"
+DB_CONNECT_STR = INIT_CONNECT_STR+f"/{DB_NAME}"
 
 # Setup Database
 engine = create_engine(INIT_CONNECT_STR)
@@ -37,7 +37,7 @@ Base = declarative_base()
 
 
 class Individual(Base):
-    __tablename__ = 'individual'
+    __tablename__ = 'individuals'
 
     _indvdl_id = Column('indvdl_id', String(36), primary_key=True)
     user_name = Column('user_name', String(255), unique=True)
@@ -90,7 +90,7 @@ class Account(Base):
 
     _account_id = Column('account_id', String(36), primary_key=True)
     indvdl_id = Column('indvdl_id', String(
-        36), ForeignKey('individual.indvdl_id'))
+        36), ForeignKey('individuals.indvdl_id'))
     account_type = Column('account_type', String(255))
     _balance = Column('balance', Integer)
     _liability_fg = Column('liability_fg', TINYINT)
