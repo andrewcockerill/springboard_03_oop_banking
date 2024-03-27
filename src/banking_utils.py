@@ -13,6 +13,43 @@ Base = declarative_base()
 
 
 class Individual(Base):
+    """Declarative base class describing unique individuals in the banking system. This will correspond to
+    and `individuals` table in the banking database.
+
+    Parameters
+    ----------
+
+    indvdl_id : str
+        Unique identifier for an individual. If not specified, will create a unique UUID. This is the primary key
+        for the `individuals` table.
+
+    user_name : str
+        Login name for the individual.
+
+    password : str
+        Password for the user. Input will be encrypted via SHA-256.
+
+    first_name : str
+        Individual's first name
+
+    last_name : str
+        Individual's last name
+
+    age_num : int
+        Individual's age
+
+    address : str
+        Individual's address
+
+    Methods
+    -------
+
+    make_basic_accounts(self):
+        Generates three default Account objects. For the scope of this project, this will return a checking, savings, and credit card
+        account respectively, starting at a balance of 0.
+
+    """
+
     __tablename__ = 'individuals'
 
     _indvdl_id = Column('indvdl_id', String(36), primary_key=True)
@@ -62,12 +99,53 @@ class Individual(Base):
 
 
 class Account(Base):
+    """Declarative base class describing unique accounts in the banking system. This will correspond to
+    and `accounts` table in the banking database.
+
+    Parameters
+    ----------
+
+    account_id : str
+        Unique identifier for an account. If not specified, will create a unique UUID. This is the primary key
+        for the `accounts` table.
+
+    indvdl_id : str
+        This corresponds to the `individuals.indvdl_id` that is the owner of the account. This will be a foreign
+        key in the `accounts` table.
+
+    account_type : str
+        Account type for the individual ('Checking', 'Savings', 'Credit Card')
+
+    balance : int
+        Balance on the account, must be >= 0.
+
+    liability_fg : int
+        Must be 0 or 1. 0=non-liability, 1=liability
+        A liability account will have its balance increased in credit transactions and decreased in debit transactions.
+        A non-liability account will have its balance decreased in credit transactions and increased in debit transactions.
+
+    interest_rate : float
+        Interest rate on the account if applicable.
+
+    Methods
+    -------
+
+    debit(amt : int):
+        Returns a Transaction object for the given cash flow on the account.
+        amt must be an integer >=0. The associated account will be debited for this amount.
+
+    credit(amt : int):
+        Returns a Transaction object for the given cash flow on the account.
+        amt must be an integer >=0. The associated account will be credited for this amount.
+
+    """
+
     __tablename__ = 'accounts'
 
     _account_id = Column('account_id', String(36), primary_key=True)
     indvdl_id = Column('indvdl_id', String(
         36), ForeignKey('individuals.indvdl_id'))
-    account_type = Column('account_type', String(255))
+    _account_type = Column('account_type', String(255))
     _balance = Column('balance', Integer)
     _liability_fg = Column('liability_fg', TINYINT)
     _interest_rate = Column('interest_rate', DECIMAL(10, 2))
@@ -83,6 +161,17 @@ class Account(Base):
     @property
     def account_id(self):
         return self._account_id
+
+    @property
+    def account_type(self):
+        return self._account_type
+
+    @account_type.setter
+    def account_type(self, new_type):
+        if new_type not in ['Checking', 'Savings', 'Credit Card']:
+            raise ValueError(
+                'Accounts can only be `Checking`, `Savings`, or `Credit Card`')
+        self._account_type = new_type
 
     @property
     def balance(self):
@@ -140,6 +229,31 @@ class Account(Base):
 
 
 class Transaction(Base):
+    """Declarative base class describing unique transactions in the banking system. This will correspond to
+    and `transactions` table in the banking database.
+
+    Parameters
+    ----------
+
+    transaction_id : str
+        Unique identifier for a transaction. If not specified, will create a unique UUID. This is the primary key
+        for the `transactions` table.
+
+    account_id : str
+        This corresponds to the `accounts.account_id` that is the owner of the account. This will be a foreign
+        key in the `transactions` table.
+
+    transaction_type : str
+        This is the transaction type (credit or debit)
+
+    amount : int
+        This is the amount of the transaction cash flow
+
+    transaction_timestamp : datetime.datetime
+        This is the timestamp of the transaction (when the object was created)
+
+    """
+
     __tablename__ = 'transactions'
 
     _transaction_id = Column('transaction_id', String(36), primary_key=True)
