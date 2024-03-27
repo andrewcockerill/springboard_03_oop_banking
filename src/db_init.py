@@ -8,7 +8,7 @@ import json
 from datetime import datetime
 from dotenv import load_dotenv, dotenv_values
 import os
-from banking_utils import Individual, Account, Transaction
+from banking_utils import Individual, Account, Transaction, Employee
 
 # Constants
 TEST_DATA = 'test_db_data.json'
@@ -40,6 +40,7 @@ Base = declarative_base()
 Individual.__table__.create(engine)
 Account.__table__.create(engine)
 Transaction.__table__.create(engine)
+Employee.__table__.create(engine)
 Session = sessionmaker(engine)
 
 # Populate test data
@@ -48,7 +49,8 @@ with Session() as session:
         test_dat = json.load(f)
 
     # Add individuals
-    test_indvdls = [Individual(**kwargs) for kwargs in test_dat.values()]
+    test_indvdls = [Individual(**kwargs)
+                    for kwargs in test_dat['individuals'].values()]
 
     for indvdl in test_indvdls:
         session.add(indvdl)
@@ -76,6 +78,15 @@ with Session() as session:
         100) for acct_groups in test_accounts]
     for transaction in test_transactions:
         session.add(transaction)
+
+    session.commit()
+
+    # Add employees
+    test_employees = [Employee(**kwargs)
+                      for kwargs in test_dat['employees'].values()]
+
+    for employee in test_employees:
+        session.add(employee)
 
     session.commit()
 

@@ -16,7 +16,7 @@ class Individual(Base):
     """Declarative base class describing unique individuals in the banking system. This will correspond to
     and `individuals` table in the banking database.
 
-    Parameters
+    Attributes
     ----------
 
     indvdl_id : str
@@ -102,7 +102,7 @@ class Account(Base):
     """Declarative base class describing unique accounts in the banking system. This will correspond to
     and `accounts` table in the banking database.
 
-    Parameters
+    Attributes
     ----------
 
     account_id : str
@@ -232,7 +232,7 @@ class Transaction(Base):
     """Declarative base class describing unique transactions in the banking system. This will correspond to
     and `transactions` table in the banking database.
 
-    Parameters
+    Attributes
     ----------
 
     transaction_id : str
@@ -292,3 +292,60 @@ class Transaction(Base):
     @property
     def transaction_timestamp(self):
         return self._transaction_timestamp
+
+
+class Employee(Base):
+    """Declarative base class describing unique employees in the banking system. This will correspond to
+    and `employees` table in the banking database.
+
+    Attributes
+    ----------
+
+    employee_id : str
+        Unique identifier for an employee. If not specified, will create a unique UUID. This is the primary key
+        for the `employees` table.
+
+    user_name : str
+        Login name for the employee.
+
+    password : str
+        Password for the user. Input will be encrypted via SHA-256.
+
+    first_name : str
+        Employee's first name
+
+    last_name : str
+        Employee's last name
+
+    job_title : str
+        Employee's job title"""
+
+    __tablename__ = 'employees'
+
+    _employee_id = Column('employee_id', String(36), primary_key=True)
+    user_name = Column('user_name', String(255), unique=True)
+    _password = Column('password', String(64))
+    first_name = Column('first_name', String(255))
+    last_name = Column('last_name', String(255))
+    job_title = Column('job_title', String(255))
+
+    def __init__(self, user_name, password, first_name, last_name, job_title, employee_id=None):
+        self._employee_id = str(
+            uuid4()) if employee_id is None else employee_id
+        self.user_name = user_name
+        self.password = password
+        self.first_name = first_name
+        self.last_name = last_name
+        self.job_title = job_title
+
+    @property
+    def employee_id(self):
+        return self._employee_id
+
+    @property
+    def password(self):
+        return self._password
+
+    @password.setter
+    def password(self, pwd):
+        self._password = sha256(pwd.encode('utf-8')).hexdigest()

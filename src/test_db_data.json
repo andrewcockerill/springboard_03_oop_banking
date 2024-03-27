@@ -1,42 +1,67 @@
 {
-  "0": {
-    "user_name": "test",
-    "password": "test",
-    "first_name": "Test",
-    "last_name": "Test",
-    "age_num": 35,
-    "address": "123 Test Street"
+  "individuals": {
+    "0": {
+      "user_name": "test",
+      "password": "test",
+      "first_name": "Test",
+      "last_name": "Test",
+      "age_num": 35,
+      "address": "123 Test Street"
+    },
+    "1": {
+      "user_name": "scrooge",
+      "password": "duck",
+      "first_name": "Scrooge",
+      "last_name": "McDuck",
+      "age_num": 60,
+      "address": "6250 Duckburg Avenue"
+    },
+    "2": {
+      "user_name": "cooljedi",
+      "password": "lightsaber",
+      "first_name": "Luke",
+      "last_name": "Skywalker",
+      "age_num": 25,
+      "address": "2187 Tatooine Way"
+    },
+    "3": {
+      "user_name": "ironman",
+      "password": "avengers",
+      "first_name": "Tony",
+      "last_name": "Stark",
+      "age_num": 45,
+      "address": "97 Avengers Street"
+    },
+    "4": {
+      "user_name": "thecaptain",
+      "password": "enterprise",
+      "first_name": "Jean-Luc",
+      "last_name": "Picard",
+      "age_num": 50,
+      "address": "1701 North Center Corner"
+    }
   },
-  "1": {
-    "user_name": "scrooge",
-    "password": "duck",
-    "first_name": "Scrooge",
-    "last_name": "McDuck",
-    "age_num": 60,
-    "address": "6250 Duckburg Avenue"
-  },
-  "2": {
-    "user_name": "cooljedi",
-    "password": "lightsaber",
-    "first_name": "Luke",
-    "last_name": "Skywalker",
-    "age_num": 25,
-    "address": "2187 Tatooine Way"
-  },
-  "3": {
-    "user_name": "ironman",
-    "password": "avengers",
-    "first_name": "Tony",
-    "last_name": "Stark",
-    "age_num": 45,
-    "address": "97 Avengers Street"
-  },
-  "4": {
-    "user_name": "thecaptain",
-    "password": "enterprise",
-    "first_name": "Jean-Luc",
-    "last_name": "Picard",
-    "age_num": 50,
-    "address": "1701 North Center Corner"
+  "employees": {
+    "0": {
+      "user_name": "mscott",
+      "password": "mscott",
+      "first_name": "Michael",
+      "last_name": "Scott",
+      "job_title": "Regional Manager"
+    },
+    "1": {
+      "user_name": "dschrute",
+      "password": "dschrute",
+      "first_name": "Dwight",
+      "last_name": "Schrute",
+      "job_title": "Assistant to the Regional Manager"
+    },
+    "2": {
+      "user_name": "kmalone",
+      "password": "password",
+      "first_name": "Kevin",
+      "last_name": "Malone",
+      "job_title": "Accountant"
+    }
   }
 }
